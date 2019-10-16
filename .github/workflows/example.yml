@@ -1,0 +1,19 @@
+name: CI
+
+on: [pull_request]
+
+jobs:
+  validation:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "[please test action] == ${{ contains(github.event.pull_request.body, '[please test ') }}"
+
+  test:
+    runs-on: ubuntu-latest
+    needs: validation
+    if: "contains(github.event.pull_request.body, '[please test action]')"
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Run ALL TESTS
+      run: echo "Run ALL TESTS"
